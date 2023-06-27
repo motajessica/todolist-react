@@ -12,6 +12,7 @@ function App() {
   const addTask = (task: Task) => {
     setTasks(prevState => [ ... prevState, task ]);
   }
+
   return (
       <div className='container'>
         <header>
