@@ -5,6 +5,7 @@ import reactLogo from './assets/react.svg'
 import CustomForm from './components/CustomForm'
 import EditForm from './components/EditForm'
 import TaskList from './components/TaskList'
+import ThemeSwitcher from './components/ThemeSwitcher'
 
 
 function App() {
@@ -72,6 +73,7 @@ function App() {
             enterEditMode={enterEditMode}
           /> 
         )}
+        <ThemeSwitcher />
       </div>
   )
 }

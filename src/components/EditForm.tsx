@@ -3,12 +3,20 @@ import { useState, useEffect } from 'react';
 // library imports
 import { CheckIcon } from '@heroicons/react/24/solid'
 
-const EditForm = ({ editedTask, updateTask, closeEditMode }) => {
-  const [updatedTaskName, setUpdatedTaskName] = useState(editedTask.name);
+interface EditFormProps {
+  editedTask: { name: string };
+  updateTask: (task: { name: string }) => void;
+  closeEditMode: () => void;
+}
 
-  useEffect(()=> {
-    const closeModalIfEscaped = (e) => {
-      e.key === "Escape" && closeEditMode();
+const EditForm: React.FC<EditFormProps> = ({ editedTask, updateTask, closeEditMode }) => {
+  const [updatedTaskName, setUpdatedTaskName] = useState<string>(editedTask.name);
+
+  useEffect(() => {
+    const closeModalIfEscaped = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeEditMode();
+      }
     }
 
     window.addEventListener('keydown', closeModalIfEscaped)
@@ -18,28 +26,28 @@ const EditForm = ({ editedTask, updateTask, closeEditMode }) => {
     }
   }, [closeEditMode])
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    updateTask({...editedTask, name: updatedTaskName})
+    updateTask({ ...editedTask, name: updatedTaskName });
   }
 
   return (
     <div
       role="dialog"
       aria-labelledby="editTask"
-      onClick={(e) => {e.target === e.currentTarget && closeEditMode()}}
-      >
+      onClick={(e) => { e.target === e.currentTarget && closeEditMode() }}
+    >
       <form
         className="todo"
         onSubmit={handleFormSubmit}
-        >
+      >
         <div className="wrapper">
           <input
             type="text"
             id="editTask"
             className="input"
             value={updatedTaskName}
-            onInput={(e) => setUpdatedTaskName(e.target.value)}
+            onInput={(e) => setUpdatedTaskName(e.currentTarget.value)}
             required
             autoFocus
             maxLength={60}
@@ -48,17 +56,20 @@ const EditForm = ({ editedTask, updateTask, closeEditMode }) => {
           <label
             htmlFor="editTask"
             className="label"
-          >Update Task</label>
+          >
+            Update Task
+          </label>
         </div>
         <button
           className="btn"
           aria-label={`Confirm edited task to now read ${updatedTaskName}`}
           type="submit"
-          >
+        >
           <CheckIcon strokeWidth={2} height={24} width={24} />
         </button>
       </form>
     </div>
-  )
+  );
 }
-export default EditForm
+
+export default EditForm;
