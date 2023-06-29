@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 //Icons
 import { XMarkIcon, SunIcon, MoonIcon, SwatchIcon } from '@heroicons/react/24/solid'
 //styles
@@ -8,6 +8,15 @@ import styles from './ThemeSwitcher.module.css'
 const ThemeSwitcher = () => {
   const [isColorPicking, setIsColorPicking] = useState('light')
   const [theme, setTheme] = useState(false)
+  const [hue, setHue] = useState('240')
+
+useEffect(() => {
+  document.documentElement.setAttribute('color-scheme', theme)
+}, [theme])
+
+useEffect(() => {
+  document.documentElement.style.setProperty('--_hue', hue)
+}, [hue])
 
   return (
    <aside 
@@ -24,7 +33,15 @@ const ThemeSwitcher = () => {
         >
         <XMarkIcon />
         </button>
-        <input type="range"/>
+        <input 
+          className={styles.picker}
+          type="range"
+          min='0'
+          max='360'
+          aria-label='Chang Color theme slider'
+          value={hue}
+          onInput={(e) => setHue(e.target.value)}
+        />
         </>
       )
       : (
