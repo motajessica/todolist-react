@@ -7,6 +7,7 @@ import EditForm from './components/EditForm';
 import TaskList from './components/TaskList';
 import ThemeSwitcher from './components/ThemeSwitcher';
 import useLocalStorage from './hooks/useLocalStorage';
+import ListManager from './components/listManeger';
 
 interface Task {
   id: number;
@@ -14,11 +15,21 @@ interface Task {
   checked: boolean;
 }
 
+//
+interface List {
+  id: number;
+  name: string;
+}
+//
+
 function App() {
   const [tasks, setTasks] = useLocalStorage<Task[]>('react-todo.tasks', []);
   const [editedTask, setEditedTask] = useState<Task | null>(null);
   const [previousFocusEl, setPreviousFocusEl] = useState<HTMLElement | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  //
+  const [lists, setLists] = useLocalStorage<List[]>("react-todo.lists", []);
+  //
 
   const addTask = (task: Task) => {
     setTasks((prevState: any) => [...prevState, task]);
@@ -55,6 +66,12 @@ function App() {
     setIsEditing(true);
     setPreviousFocusEl(document.activeElement as HTMLElement);
   };
+
+  //
+  const addList = (list: List) => {
+    setLists((prevState: List[]) => [...sprevState, list]);
+  }
+  //
 
   return (
     <div className='container'>
